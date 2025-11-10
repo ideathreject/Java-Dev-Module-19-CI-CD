@@ -14,3 +14,4 @@ Relational DB (H2) wired via Spring Data JPA
 Flyway migration with a created note table
 
 Full CRUD for notes (create/read/update/delete)
+CI check: testing GitHub Actions.
