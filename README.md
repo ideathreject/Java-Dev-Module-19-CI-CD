@@ -60,3 +60,4 @@ class NoteServiceImplTest {
 
 This test lifts the real Spring context, uses the real `NoteService` and asserts that create + read works.
 
+test ci
