@@ -1,17 +1,62 @@
-📒 Note App — Spring Boot MVC + JPA + Flyway + REST (CRUD)
+# ✅ CI for Note App (Gradle + GitHub Actions)
 
-A compact Java application for managing notes, built with Spring Boot, Spring MVC, Spring Data JPA, H2, and Flyway.
-The project includes both a classic Thymeleaf UI and a REST API with request validation.
+This update adds automated testing to the project using **GitHub Actions** and simple **Spring Boot tests**.
 
-✅ What’s Done (matches HW requirements)
+##  Tests
 
-Spring Boot application
+I added two test classes under `src/test/java`:
 
-Spring MVC controllers (HTML UI) and a REST API
+### `ApplicationTests`
+```java
+package com.goit.spring;
 
-Relational DB (H2) wired via Spring Data JPA
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
-Flyway migration with a created note table
+@SpringBootTest
+class ApplicationTests {
 
-Full CRUD for notes (create/read/update/delete)
-CI check: testing GitHub Actions.
+    @Test
+    void contextLoads() {
+    }
+}
+```
+This test verifies that the Spring application context starts successfully.
+
+### `NoteServiceImplTest`
+```java
+package com.goit.spring.service;
+
+import com.goit.spring.entity.Note;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest
+@Transactional
+class NoteServiceImplTest {
+
+    @Autowired
+    private NoteService noteService;
+
+    @Test
+    void add_and_getById() {
+        Note n = new Note();
+        n.setTitle("t1");
+        n.setContent("c1");
+
+        Note saved = noteService.add(n);
+        assertNotNull(saved.getId());
+
+        Note fromDb = noteService.getById(saved.getId());
+        assertEquals("t1", fromDb.getTitle());
+        assertEquals("c1", fromDb.getContent());
+    }
+}
+```
+
+This test lifts the real Spring context, uses the real `NoteService` and asserts that create + read works.
+
